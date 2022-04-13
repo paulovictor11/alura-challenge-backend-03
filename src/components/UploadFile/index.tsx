@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
-import UploadFactory from '../../factories/UploadFactory';
+import UploadFactory, { UploadFileResponse } from '../../factories/UploadFactory';
 
 const UploadFile = () => {
     const toast = useToast();
@@ -17,9 +17,9 @@ const UploadFile = () => {
 
     const { handle } = UploadFactory();
     const { mutate, isLoading } = useMutation(handle, {
-        onSuccess: () => {
+        onSuccess: ({ message }: UploadFileResponse) => {
             toast({
-                title: 'Transações importadas com sucesso',
+                title: message,
                 status: 'success',
                 isClosable: true,
                 position: 'top-right',
@@ -61,6 +61,7 @@ const UploadFile = () => {
         }
 
         mutate(file);
+        setFile(null);
     }
 
     return (
