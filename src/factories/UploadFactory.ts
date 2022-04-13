@@ -1,7 +1,19 @@
+import baseUrl from "../lib/axios";
+
 const UploadFactory = () => {
     const handle = async (file: File): Promise<void> => {
-        console.log('filename', file.name);
-        console.log('filesize', file.size);
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            await baseUrl.post('/upload-file', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        } catch (err: any) {
+            throw new Error(err.response.data.message);
+        }
     }
 
     return {

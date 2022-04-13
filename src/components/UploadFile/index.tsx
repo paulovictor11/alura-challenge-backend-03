@@ -26,9 +26,9 @@ const UploadFile = () => {
                 variant: 'left-accent',
             });
         },
-        onError: () => {
+        onError: (err: Error) => {
             toast({
-                title: 'Erro ao importar transações',
+                title: err.message,
                 status: 'error',
                 isClosable: true,
                 position: 'top-right',
@@ -48,7 +48,7 @@ const UploadFile = () => {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
+
         if (!file) {
             toast({
                 title: 'Por favor, selecione um arquivo',
@@ -67,6 +67,7 @@ const UploadFile = () => {
         <form onSubmit={handleSubmit}>
             <input
                 type="file"
+                accept=".csv"
                 style={{ display: 'none' }}
                 ref={hiddenFileInput}
                 onChange={handleChange}
@@ -83,7 +84,7 @@ const UploadFile = () => {
                         Selecione
                     </Button>
                 </InputLeftAddon>
-                <Input placeholder={file?.name ?? "No file chosen"} isReadOnly />
+                <Input placeholder={file?.name ?? "Nenhum arquivo selecionado"} isReadOnly />
             </InputGroup>
             <Text color="gray" fontSize="sm" fontWeight="semibold">
                 Selecione o arquivo para realizar o upload
